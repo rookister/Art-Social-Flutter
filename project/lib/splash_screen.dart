@@ -21,7 +21,7 @@ class SplashScreen extends StatefulWidget{
   const SplashScreen({super.key});
 
   @override
-  Splash createState() => Splash();
+  State<SplashScreen> createState() => Splash();
 }
 
 class Splash extends State<SplashScreen> {
@@ -30,13 +30,14 @@ class Splash extends State<SplashScreen> {
     super.initState();
     _delay();
   }
+  
 
   _delay() async{
      await Future.delayed(const Duration(seconds: 5),() {});
+     deactivate();
      Navigator.pushReplacement(
       context, 
       MaterialPageRoute(builder: (context) => const Login()));
-      dispose();
   }
 
   @override
