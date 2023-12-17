@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:project/login.dart';
+import 'package:project/route_anim.dart';
 
 
 class SplashContext extends StatelessWidget {
@@ -37,26 +38,20 @@ class Splash extends State<SplashScreen> {
      deactivate();
      Navigator.pushReplacement(
       context, 
-      MaterialPageRoute(builder: (context) => const Login()));
+      Slide(child: const Login(),direction:AxisDirection.up));
   }
 
   @override
   Widget build(BuildContext context){
     return  Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Color.fromARGB(255, 198, 51, 76),
-            Color.fromARGB(255, 93, 37, 191)])),
+      color: Colors.black,
      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(
-            'assets/logo.gif',
-          width: 150,
-          height: 150, 
+            'assets/running.gif',
+          width: 250,
+          height: 250, 
           fit: BoxFit.cover,
           ),
           const SizedBox(height: 50),

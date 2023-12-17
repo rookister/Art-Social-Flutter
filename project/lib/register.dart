@@ -20,7 +20,7 @@ class RegPage extends State<Register> {
         mainAxisAlignment: MainAxisAlignment.center,
         
         children: [
-          Image.asset( 'assets/logo.gif',width: 150,height: 150, fit: BoxFit.cover),
+          Image.asset( 'assets/idleTail.gif',width: 250,height: 200, fit: BoxFit.cover),
           const SizedBox(height: 50),
           
           Padding( 
@@ -41,7 +41,7 @@ class RegPage extends State<Register> {
                 'Create a Password','Password',visible,
                   (){ setState ( () {visible=!visible;} );})
             )),
-          const SizedBox(height: 70),
+          const SizedBox(height: 68),
           
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 0),

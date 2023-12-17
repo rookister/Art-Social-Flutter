@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'themes.dart';
+import 'package:project/profile.dart';
+import 'package:project/route_anim.dart';
+import 'themes.dart'; 
 import 'register.dart';
 
 class Login extends StatefulWidget{
@@ -14,14 +16,15 @@ bool visible=false;
 
   @override
   Widget build(BuildContext context){
+    
     return Card(
-    child: Container( 
+      child: Container(
       color: Colors.black,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         
         children: [
-          Image.asset( 'assets/logo.gif',width: 150,height: 150, fit: BoxFit.cover),
+          Image.asset( 'assets/groom2.gif',width: 250,height: 200, fit: BoxFit.cover),
           const SizedBox(height: 50),
           
           Padding( 
@@ -55,7 +58,10 @@ bool visible=false;
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 0),
             child: ElevatedButton(
-              onPressed: (){},
+              onPressed: (){
+                Navigator.pushReplacement(context,
+                Slide(child: const Profile(),direction: AxisDirection.up));
+              },
               style: Themes().elevB(),
               child: Text('Sign In', style: Themes().text()),
           )),
@@ -66,16 +72,18 @@ bool visible=false;
             child: TextButton(
               style: Themes().textB(), 
               child: Text('New Here?', style: Themes().text()),
-              onPressed: (){
-                Navigator.push(context
-                , MaterialPageRoute(builder:(context) => const Register()));
-              },
+              onPressed: () {
+            Navigator.push(context,
+                Fade(child: const Register()));
+                },
+              
             )),
         ],
      ), 
-    )
-    );
+    ));
   }
 }
+
+
 
 
