@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+//import 'package:project/auth_page.dart';
 import 'package:project/login.dart';
 import 'package:project/route_anim.dart';
 
@@ -29,16 +30,15 @@ class Splash extends State<SplashScreen> {
   @override
   void initState(){
     super.initState();
-    _delay();
+    _delay(context);
   }
   
 
-  _delay() async{
-     await Future.delayed(const Duration(seconds: 5),() {});
-     deactivate();
-     Navigator.pushReplacement(
+  _delay(BuildContext context) async{
+     await Future.delayed(const Duration(seconds: 3),() {   
+      Navigator.pushReplacement(
       context, 
-      Slide(child: const Login(),direction:AxisDirection.up));
+      Slide(child: const Login(),direction: AxisDirection.up));});
   }
 
   @override
@@ -50,8 +50,8 @@ class Splash extends State<SplashScreen> {
         children: [
           Image.asset(
             'assets/running.gif',
-          width: 250,
-          height: 250, 
+          width: 150,
+          height: 150, 
           fit: BoxFit.cover,
           ),
           const SizedBox(height: 50),

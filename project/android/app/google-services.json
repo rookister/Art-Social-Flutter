@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "365426012425",
+    "project_id": "artsocial-4beaf",
+    "storage_bucket": "artsocial-4beaf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:365426012425:android:f7e42a48b3c7088afa23d8",
+        "android_client_info": {
+          "package_name": "com.example.project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsyAtDZbfdBie8ORk4bQ1XK3O-gRrLdng"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -14,10 +14,17 @@ class Slide extends PageRouteBuilder {
 
     @override
     Widget buildTransitions(BuildContext context, Animation<double> animation,
-    Animation<double> secondaryAnimation, Widget child) => 
-    SlideTransition(
-      position: Tween<Offset>(begin: getBeginOffset(), end: Offset.zero).animate(animation), 
+    Animation<double> secondaryAnimation, Widget child){
+      var begin = getBeginOffset();
+      const end = Offset.zero;
+      const curve= Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+    return SlideTransition(
+      position: animation.drive(tween), 
       child: child);
+    }
 
       Offset getBeginOffset() {
         switch(direction) {

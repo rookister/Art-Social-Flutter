@@ -3,9 +3,31 @@ import 'package:flutter/material.dart';
 
 class Themes{
 
+  AlertDialog loadingDialog(){
+    return AlertDialog(
+      content: SizedBox(
+        width: 150,
+        height: 170,
+        child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset('assets/stretching.gif',height: 100, width: 100, fit: BoxFit.cover,),
+          const SizedBox(height: 30),
+          const CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.white))
+        ],
+      )), 
+      backgroundColor: const Color.fromARGB(95, 0, 0, 0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(1000),
+        //side: const BorderSide(color: Colors.white)
+      ),
+    );
+  }
+
   TextStyle text(){
     return const TextStyle(
-      color: Colors.white
+      color: Colors.white,
+      fontSize: 11
     );
   }
 
@@ -31,7 +53,7 @@ class Themes{
   }
 
   InputDecoration passFieldDecor(
-    String labelText, String hintText,bool visible,VoidCallback toggle){
+    String labelText, String hintText,bool visible,VoidCallback toggle,{Color color= Colors.white}){
       return InputDecoration(
             suffixIcon: Padding(padding: const EdgeInsets.only(right: 10),
               child: IconButton(
@@ -43,11 +65,11 @@ class Themes{
             hintText: hintText,
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: Colors.white, width: 2),
+              borderSide:  BorderSide(color: color, width: 2),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30),
-              borderSide: const BorderSide(color: Colors.white, width: 2),
+              borderSide:  BorderSide(color: color, width: 2),
             ),
             contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
             labelStyle: const TextStyle(color: Color.fromARGB(255, 212, 212, 212)),
@@ -62,17 +84,17 @@ class Themes{
           );
     }
     
-  InputDecoration textFieldDecor(String labelText, String hintText){
+  InputDecoration textFieldDecor(String labelText, String hintText,{Color color= Colors.white}){
           return InputDecoration(
             labelText: labelText,
             hintText: hintText,
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: Colors.white, width: 2),
+              borderSide:  BorderSide(color: color, width: 2),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30),
-              borderSide: const BorderSide(color: Colors.white, width: 2),
+              borderSide: BorderSide(color: color, width: 2),
             ),
             contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
             labelStyle: const TextStyle(color: Color.fromARGB(255, 212, 212, 212)),
