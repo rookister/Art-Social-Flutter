@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project/animations.dart';
-import 'package:project/profile.dart';
+import 'package:project/main_page.dart';
 import 'package:project/route_anim.dart';
 import 'package:project/verification.dart';
 import 'themes.dart';
@@ -53,7 +53,7 @@ void googlesignIn() async {
 
   setState(() {
     Navigator.pushReplacement(context,
-        Slide(child: const Profile(),direction: AxisDirection.down));
+        Slide(child: const MainPage(),direction: AxisDirection.down));
   });
 
 }

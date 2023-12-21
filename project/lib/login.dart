@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:project/forgorP.dart';
-import 'package:project/verification.dart';
+import 'forgot_pass.dart';
+import 'verification.dart';
 import 'animations.dart';
-import 'profile.dart';
+import 'main_page.dart';
 import 'route_anim.dart';
 import 'themes.dart'; 
 import 'register.dart';
@@ -51,7 +51,7 @@ void googlesignIn() async {
 
   setState(() {
     Navigator.pushReplacement(context,
-        Slide(child: const Profile(),direction: AxisDirection.down));
+        Slide(child: const MainPage(),direction: AxisDirection.down));
   });
 
 }
@@ -71,7 +71,7 @@ void signIn() async {
     setState(() {
       if(status==1){                    
         Navigator.pushReplacement(context,
-        Slide(child: const Profile(),direction: AxisDirection.down));}
+        Slide(child: const MainPage(),direction: AxisDirection.down));}
       else{ 
           color= const Color.fromARGB(255, 219, 34, 34);
         }

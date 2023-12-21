@@ -3,6 +3,28 @@ import 'package:flutter/material.dart';
 
 class Themes{
 
+SizedBox iconTextButtons({ required String text, IconData? iconData, required VoidCallback onPressed}) {
+  return SizedBox(
+    width: 200,
+    height: 50,
+    child: ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.black, 
+        foregroundColor: Colors.white, 
+      ),
+      child: Row(
+        children: [
+          Icon(iconData, color: Colors.white),
+          const SizedBox(width: 20), 
+          Text(
+            text,
+            style: const TextStyle(fontSize: 17, color: Colors.white, fontWeight: FontWeight.w200)
+          ),
+        ])),
+  );
+}
+
   AlertDialog loadingDialog(){
     return AlertDialog(
       content: SizedBox(
@@ -19,7 +41,6 @@ class Themes{
       backgroundColor: const Color.fromARGB(95, 0, 0, 0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(1000),
-        //side: const BorderSide(color: Colors.white)
       ),
     );
   }
