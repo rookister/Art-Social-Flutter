@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project/animations.dart';
 import 'package:project/main_page.dart';
 import 'package:project/route_anim.dart';
+import 'package:project/shared_prefs.dart';
 import 'package:project/verification.dart';
 import 'themes.dart';
 
@@ -39,6 +40,139 @@ void initState(){
   Animations().setup(() { setState(() {});}, cont);
 }
 
+@override
+void dispose(){
+  Animations().dispose(cont);
+  super.dispose();
+}
+
+Color mainColor = Colors.black;
+Color mainColor2 = Colors.black;
+bool theme = true;
+bool isThemeSet = false;
+
+defaultTheme(){
+  mainColor = Colors.black;
+  mainColor2 = Colors.black;
+}
+
+secondTheme(){
+  mainColor = const Color.fromARGB(255, 111, 76, 157);
+  mainColor2 = const Color.fromARGB(255, 185, 108, 188);
+}
+
+setTheme() async{
+  theme = await Preferences().getTheme();
+      if(theme){defaultTheme();}
+      else{secondTheme();}
+      isThemeSet = true;
+}
+
+  @override
+  Widget build(BuildContext context){
+  return FutureBuilder(
+    future: setTheme(),
+    builder: (context, snapshot) {
+    if (snapshot.connectionState == ConnectionState.done || isThemeSet) {
+      return SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        child: Stack(
+        alignment: Alignment.center,
+        children:[
+        Card(
+          child: Container(
+          constraints: BoxConstraints.expand(
+            height: MediaQuery.of(context).size.height+10
+          ), 
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [mainColor2, mainColor], 
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              
+              children: [
+                Image.asset( 'assets/idleTail.gif',width: 200,height: 200, fit: BoxFit.cover),
+                const SizedBox(height: 50),
+                
+                Padding( 
+                  padding: const EdgeInsets.symmetric(vertical: 16,horizontal: 50), 
+                  child: TextFormField(
+                    style: Themes().text(),
+                    controller: emailCont,
+                    decoration: Themes().textFieldDecor(
+                      'Enter your Email','Email',color: color),
+                  )),
+                const SizedBox(height: 2),
+      
+                Padding( 
+                  padding: const EdgeInsets.symmetric(vertical: 0,horizontal: 50), 
+                  child: TextFormField(
+                    obscureText: !visible,
+                    controller: passCont,
+                    style: Themes().text(),
+                    decoration: Themes().passFieldDecor(
+                      'Create a Password','Password',visible,
+                        (){ setState ( () {visible=!visible;} );},color: colorP)
+                  )),
+                const SizedBox(height: 2),
+  
+                Padding( 
+                  padding: const EdgeInsets.symmetric(vertical: 16,horizontal: 50), 
+                  child: TextFormField(
+                    obscureText: !visibleC,
+                    controller: confPassCont,
+                    style: Themes().text(),
+                    decoration: Themes().passFieldDecor(
+                      'Confirm Password','Confirmation',visibleC,
+                        (){ setState ( () {visibleC=!visibleC;} );},color: colorC)
+                  )),
+                const SizedBox(height: 30),
+                
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 0),
+                  child: ElevatedButton(
+                    onPressed: register,
+                    style: Themes().elevB(),
+                    child: Text('Register', style: Themes().text()),
+                )),
+                const SizedBox(height: 60),
+                
+                Text('Or continue with',style: Themes().text()),
+                const SizedBox(height: 5),
+                
+                IconButton(
+                  onPressed: googlesignIn, 
+                  icon: Image.asset('assets/googleLogo.png',height: 100, fit: BoxFit.cover),
+                  iconSize: 55,
+                  ),
+                const SizedBox(height: 50),
+      
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 0),
+                  child: TextButton(
+                    style: Themes().textB(), 
+                    child: Text('Already a User?', style: Themes().text()),
+                    onPressed: (){ 
+                      Navigator.pop(context);},
+                  )),
+              ],
+           ), 
+          )
+          ),
+          Animations().buildBackground(rotAnim!, radAnim!, traY!, opac!),  
+        ]
+        ),
+      );
+    }
+      else{
+      return Themes().loadingDialog();
+    }  
+  }
+  );
+  }
+
 void googlesignIn() async {
   showDialog(
     context: context, 
@@ -64,9 +198,6 @@ void register() async{
     builder: (context) {
       return Themes().loadingDialog();
     });
-
-  await Future.delayed(const Duration(milliseconds: 500),() {   
-          Navigator.pop(context);});
           
   if(confPassCont.text.trim()==passCont.text.trim()){
     status= await Verification().createUser(emailCont.text.trim(),passCont.text.trim());
@@ -84,98 +215,9 @@ void register() async{
         colorC= const Color.fromARGB(255, 219, 34, 34);
         colorP= const Color.fromARGB(255, 219, 34, 34);        
       });}
+      
+  await Future.delayed(const Duration(milliseconds: 500),() {   
+          Navigator.pop(context);});
 }
 
-@override
-void dispose(){
-  Animations().dispose(cont);
-  super.dispose();
-}
-
-  @override
-  Widget build(BuildContext context){
-  return SingleChildScrollView(
-    child: Stack(
-    alignment: Alignment.center,
-    children:[
-    Card(
-      child: Container( 
-        color: Colors.black,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          
-          children: [
-            Image.asset( 'assets/idleTail.gif',width: 200,height: 200, fit: BoxFit.cover),
-            const SizedBox(height: 50),
-            
-            Padding( 
-              padding: const EdgeInsets.symmetric(vertical: 16,horizontal: 50), 
-              child: TextFormField(
-                style: Themes().text(),
-                controller: emailCont,
-                decoration: Themes().textFieldDecor(
-                  'Enter your Email','Email',color: color),
-              )),
-            const SizedBox(height: 2),
-  
-            Padding( 
-              padding: const EdgeInsets.symmetric(vertical: 0,horizontal: 50), 
-              child: TextFormField(
-                obscureText: !visible,
-                controller: passCont,
-                style: Themes().text(),
-                decoration: Themes().passFieldDecor(
-                  'Create a Password','Password',visible,
-                    (){ setState ( () {visible=!visible;} );},color: colorP)
-              )),
-            const SizedBox(height: 2),
-
-            Padding( 
-              padding: const EdgeInsets.symmetric(vertical: 16,horizontal: 50), 
-              child: TextFormField(
-                obscureText: !visibleC,
-                controller: confPassCont,
-                style: Themes().text(),
-                decoration: Themes().passFieldDecor(
-                  'Confirm Password','Confirmation',visibleC,
-                    (){ setState ( () {visibleC=!visibleC;} );},color: colorC)
-              )),
-            const SizedBox(height: 30),
-            
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 0),
-              child: ElevatedButton(
-                onPressed: register,
-                style: Themes().elevB(),
-                child: Text('Register', style: Themes().text()),
-            )),
-            const SizedBox(height: 60),
-            
-            Text('Or continue with',style: Themes().text()),
-            const SizedBox(height: 5),
-            
-            IconButton(
-              onPressed: googlesignIn, 
-              icon: Image.asset('assets/googleLogo.png',height: 100, fit: BoxFit.cover),
-              iconSize: 55,
-              ),
-            const SizedBox(height: 50),
-  
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 0),
-              child: TextButton(
-                style: Themes().textB(), 
-                child: Text('Already a User?', style: Themes().text()),
-                onPressed: (){ 
-                  Navigator.pop(context);},
-              )),
-          ],
-       ), 
-      )
-      ),
-      Animations().buildBackground(rotAnim!, radAnim!, traY!, opac!),  
-    ]
-    ),
-  );
-  }
 }

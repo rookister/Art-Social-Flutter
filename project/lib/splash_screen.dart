@@ -1,8 +1,7 @@
-// ignore_for_file: use_build_context_synchronously
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-//import 'package:project/auth_page.dart';
 import 'package:project/login.dart';
+import 'package:project/main_page.dart';
 import 'package:project/route_anim.dart';
 
 
@@ -33,12 +32,22 @@ class Splash extends State<SplashScreen> {
     _delay(context);
   }
   
-
+bool isUserSignedIn() {
+  User? user = FirebaseAuth.instance.currentUser;
+  return user != null;
+}
   _delay(BuildContext context) async{
      await Future.delayed(const Duration(seconds: 3),() {   
+      if(isUserSignedIn()==true){
       Navigator.pushReplacement(
       context, 
-      Slide(child: const Login(),direction: AxisDirection.up));});
+      Slide(child: const MainPage(),direction: AxisDirection.up));
+      }
+      else{
+      Navigator.pushReplacement(
+      context, 
+      Slide(child: const Login(),direction: AxisDirection.up));}
+      });
   }
 
   @override
