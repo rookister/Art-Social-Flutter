@@ -2,11 +2,11 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 import 'package:project/drawer.dart';
+import 'package:project/group_chats/group_chat_screen.dart';
 import 'package:project/shared_prefs.dart';
 import 'package:project/themes.dart';
 import 'search_profile.dart';
 import 'animations.dart';
-import 'group_chats.dart';
 import 'profile.dart';
 
 class MainPage extends StatefulWidget{
@@ -28,7 +28,7 @@ class MainPageBuild extends State<MainPage> with TickerProviderStateMixin{
   PageController pageCont = PageController(initialPage: 1);
   String currentName='G R O U P S';
   final List<Widget> pages= [const PageNoDie(child: Profile()),
-  const PageNoDie(child: Groups()),const PageNoDie(child: SearchProfile())];
+  const PageNoDie(child: GroupChatHomeScreen()),const PageNoDie(child: SearchProfile())];
   bool theme=true;
   bool isThemeSet = false;
 
@@ -117,7 +117,8 @@ class MainPageBuild extends State<MainPage> with TickerProviderStateMixin{
                       end: Alignment.bottomCenter,
                     ),
                   ),
-                  child: Animations().buildBackground(rotAnim!, radAnim!, traY!, opac!),
+                  child: Opacity(
+                    opacity: opacity, child: Animations().buildBackground(rotAnim!, radAnim!, traY!, opac!)),
                 ),
                 PageView(
                   controller: pageCont,
@@ -150,6 +151,7 @@ class MainPageBuild extends State<MainPage> with TickerProviderStateMixin{
   Color? subColor;
   Color? iconColor;
   Color? appBarColor;
+  double opacity =1;
 
   defaultTheme(){
   mainColor = Colors.black;
@@ -158,6 +160,7 @@ class MainPageBuild extends State<MainPage> with TickerProviderStateMixin{
   sideColor = Colors.white;
   subColor = const Color.fromARGB(255, 204, 204, 204);
   iconColor = Colors.black;
+  opacity = 1;
   }
 
   secondTheme(){
@@ -167,6 +170,7 @@ class MainPageBuild extends State<MainPage> with TickerProviderStateMixin{
   subColor = const Color.fromARGB(255, 95, 60, 140);
   sideColor = const Color.fromARGB(255, 117, 74, 174);
   iconColor = Colors.white;
+  opacity = 0.6;
   }
 
 }

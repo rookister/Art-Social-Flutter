@@ -17,9 +17,12 @@ class ProfileData extends State<SearchProfile> {
   TextEditingController searchCont = TextEditingController();
   Map<String,dynamic>? userData;
   bool searched = false;
-  bool exists = false; 
+  bool exists = false;
+  final FocusNode _userNameFocusNode = FocusNode();
+ 
   
   search(String userName) async{
+      FocusScope.of(context).unfocus();
     showDialog( context: context, builder: (context) { return Themes().loadingDialog();});
     CollectionReference collection = FirebaseFirestore.instance.collection("Users");
     QuerySnapshot querySnapshot = await collection.where('username', isEqualTo: userName).get();
@@ -35,17 +38,21 @@ class ProfileData extends State<SearchProfile> {
   
   bool isThemeSet = false;
   bool theme = true;
+  Color mainColor = const Color.fromARGB(255, 247, 62, 62);
 
 setTheme() async{
   theme = await Preferences().getTheme();
+  if(theme){mainColor = const Color.fromARGB(255, 247, 62, 62);}
+  else{mainColor = Colors.white;}
   isThemeSet = true;
 }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: null,
+      future: setTheme(),
       builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.done || isThemeSet) {
         return ListView(
               children:[
                 Visibility(
@@ -78,7 +85,7 @@ setTheme() async{
                   children: [
                     Image.asset('assets/idleTail2.gif'),
                     Text("No Record Found!",
-                  style: TextStyle(fontSize: 20, color: theme ? const Color.fromARGB(255, 247, 62, 62): Colors.white, 
+                  style: TextStyle(fontSize: 20, color: mainColor, 
                   fontWeight: FontWeight.w300),textAlign: TextAlign.center),
               ]),
               )
@@ -115,7 +122,7 @@ setTheme() async{
                     
                           Row(
                             children: [
-                            Themes().profileFields(
+                            Themes().profileFields(context, _userNameFocusNode,
                               controller: userName, isUnderlined: true, text: userData?['username']),
                             const SizedBox(width: 35)]),
                   
@@ -177,6 +184,10 @@ setTheme() async{
               ),
               const SizedBox(height: 10),
             ]);
+      }
+      else{
+        return Themes().loadingDialog();
+      }
       }
     );
   }

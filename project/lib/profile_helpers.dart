@@ -18,7 +18,8 @@ class ProfileFunctions{
           .doc(userCreds.email)
           .update({
         'username': username,
-      }); 
+      });
+      await userCreds.updateDisplayName(username); 
       return false;
     } 
       else {

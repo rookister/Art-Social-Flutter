@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:project/create_group/add_members.dart';
 import 'package:project/login.dart';
 import 'package:project/route_anim.dart';
 import 'package:project/shared_prefs.dart';
@@ -112,11 +113,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     children: [
                       Themes().iconTextButtons(text: 'Create a Group', iconData: Icons.group_add,
                       onPressed: (){
-                        
+                        Navigator.push(context, Fade(child: const AddMembersInGroup()));
                       }),
-                      const SizedBox(height: 10),
-                      Themes().iconTextButtons(text: 'Join a Group', iconData: Icons.groups,
-                      onPressed: (){}),
+                      const SizedBox(height: 25),
                     ],
                   ),
                 ),

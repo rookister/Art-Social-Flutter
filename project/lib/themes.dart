@@ -8,17 +8,6 @@ Color mainColor = Colors.black;
 Color mainColorSub = const Color.fromARGB(194, 51, 51, 51);
 Color mainColorHalf = const Color.fromARGB(255, 105, 105, 105);
 
-Themes(){
-  defaultTheme();
-}
-
-defaultTheme(){
-  sideColor = Colors.white;
-  sideColorSub = const Color.fromARGB(255, 212, 212, 212);
-  mainColor = Colors.black;
-  mainColorSub = const Color.fromARGB(194, 51, 51, 51);
-  mainColorHalf = const Color.fromARGB(255, 105, 105, 105);
-}
 
 Padding pfp(String? image, VoidCallback pressed){
  return Padding(
@@ -27,8 +16,34 @@ Padding pfp(String? image, VoidCallback pressed){
   radius: 72,
   backgroundColor: sideColor,
   child: CircleAvatar(
+    backgroundColor: const Color.fromARGB(133, 5, 27, 67),
     radius: 71,
     backgroundImage: (image==null) ? const AssetImage('assets/noPFP.jpg') as ImageProvider : NetworkImage(image),
+    child: Padding(
+      padding: const EdgeInsets.only(top: 90),
+      child: Opacity(
+        opacity: (image==null) ? 1 : 0.8,
+        child: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(shape: BoxShape.circle, color: mainColorSub),
+          child: IconButton(
+            onPressed: pressed, 
+            icon: const Icon(Icons.add_a_photo, size: 20))
+        ),
+      )))));
+}
+
+Padding gfp(String? image, VoidCallback pressed){
+ return Padding(
+  padding: const EdgeInsets.only(right: 20,top : 90),
+  child: CircleAvatar(
+  radius: 72,
+  backgroundColor: sideColor,
+  child: CircleAvatar(
+    backgroundColor: const Color.fromARGB(133, 5, 27, 67),
+    radius: 71,
+    backgroundImage: (image==null) ? const AssetImage('assets/normalGroups.jpg') as ImageProvider : NetworkImage(image),
     child: Padding(
       padding: const EdgeInsets.only(top: 90),
       child: Opacity(
@@ -113,7 +128,7 @@ Container aboutSection( BuildContext context,
     );
   }
 
-Padding profileFields(
+Padding profileFields( BuildContext context, FocusNode userNameFocusNode,
   {required TextEditingController controller, required bool isUnderlined, required String? text}) {
     text ??= 'Set a Username';
     TextPainter textPainter = TextPainter(text: TextSpan(text: text, style: const TextStyle( fontSize: 17, fontWeight: FontWeight.w400)), textDirection: TextDirection.ltr); textPainter.layout();
@@ -124,9 +139,11 @@ Padding profileFields(
     child: Row(
       children: [
         Text('@',style: TextStyle(fontSize: 17, color: sideColor, fontWeight: FontWeight.w400)),
+        const SizedBox(width: 5),
         SizedBox(
-        width: textPainter.width+2,
+        width: MediaQuery.of(context).size.width/3.25,
         child: TextFormField(
+          focusNode: userNameFocusNode,
           controller: controller..text = text,
           enabled: !isUnderlined,
           style: TextStyle(decoration: isUnderlined? TextDecoration.none : TextDecoration.underline,
@@ -215,7 +232,7 @@ AlertDialog loadingDialog(){
     );
   }
 
-AlertDialog confirmDialog(BuildContext context, VoidCallback delete){
+AlertDialog confirmDialog(BuildContext context, VoidCallback delete, String action){
     return AlertDialog(
       content: SizedBox(
         width: 150,
@@ -225,7 +242,7 @@ AlertDialog confirmDialog(BuildContext context, VoidCallback delete){
         children: [
           Image.asset('assets/idleTail2.gif',height: 120, width: 120, fit: BoxFit.cover),
           const SizedBox(height: 40),
-          Text('Are you sure?', style: TextStyle(fontSize: 20, color: sideColor, fontWeight: FontWeight.w300))
+          Text(action, style: TextStyle(fontSize: 20, color: sideColor, fontWeight: FontWeight.w300))
         ])),
       backgroundColor: const Color.fromARGB(0, 0, 0, 0),
       shadowColor: Colors.transparent,
@@ -242,7 +259,66 @@ AlertDialog confirmDialog(BuildContext context, VoidCallback delete){
       ]   
     );
   }
-  
+
+  AlertDialog resultDialog(BuildContext context, String action){
+    return AlertDialog(
+      content: SizedBox(
+        width: 150,
+        height: 200,
+        child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset('assets/idleTail2.gif',height: 120, width: 120, fit: BoxFit.cover),
+          const SizedBox(height: 40),
+          Text(action, style: TextStyle(fontSize: 20, color: sideColor, fontWeight: FontWeight.w300))
+        ])),
+      backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+      shadowColor: Colors.transparent,
+      
+      actionsAlignment: MainAxisAlignment.center,
+    );
+  }
+
+  AlertDialog resultDialog2(BuildContext context, String action){
+    return AlertDialog(
+      content: SizedBox(
+        width: 300,
+        height: 220,
+        child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset('assets/idleTail2.gif',height: 120, width: 120, fit: BoxFit.cover),
+          const SizedBox(height: 40),
+          Text(action, style: const TextStyle(backgroundColor: Color.fromARGB(36, 160, 24, 24),
+          fontSize: 17, color: Colors.redAccent, fontWeight: FontWeight.w400))
+        ])),
+      backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+      shadowColor: Colors.transparent,
+      
+      actionsAlignment: MainAxisAlignment.center,
+    );
+  }
+
+  AlertDialog resultDialog3(BuildContext context, String action){
+    return AlertDialog(
+      content: SizedBox(
+        width: 300,
+        height: MediaQuery.of(context).size.height/6,
+        child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Image.asset('assets/idleTail2.gif',height: 50 , width: 120, fit: BoxFit.cover),
+          const SizedBox(height: 10),
+          Text(action, style: const TextStyle(backgroundColor: Color.fromARGB(36, 160, 24, 24),
+          fontSize: 17, color: Colors.redAccent, fontWeight: FontWeight.w400))
+        ])),
+      backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+      shadowColor: Colors.transparent,
+      
+      actionsAlignment: MainAxisAlignment.center,
+    );
+  }
+
   TextStyle text(){
     return TextStyle(
       color: sideColor,
@@ -291,7 +367,7 @@ AlertDialog confirmDialog(BuildContext context, VoidCallback delete){
               borderSide:  BorderSide(color: color, width: 2),
             ),
             contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-            labelStyle: TextStyle(color: sideColorSub),
+            labelStyle: TextStyle(color: sideColorSub, fontSize: 13),
             hintStyle: TextStyle(color: mainColorHalf),
             filled: true,
             fillColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
@@ -317,7 +393,7 @@ AlertDialog confirmDialog(BuildContext context, VoidCallback delete){
               borderSide: BorderSide(color: color, width: 2),
             ),
             contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-            labelStyle: TextStyle(color: sideColorSub),
+            labelStyle: TextStyle(color: sideColorSub, fontSize: 13),
             hintStyle: TextStyle(color: mainColorHalf),
             filled: true,
             fillColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {

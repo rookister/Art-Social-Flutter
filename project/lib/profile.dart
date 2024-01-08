@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,6 +28,8 @@ class ProfileData extends State<Profile> {
   TextEditingController aboutMeSection = TextEditingController();
   Map<String,dynamic>? userData; 
   User? currentUser;
+  final FocusNode _userNameFocusNode = FocusNode();
+
   
 
   @override
@@ -60,6 +64,9 @@ class ProfileData extends State<Profile> {
           userData = documentSnapshot.data() as Map<String, dynamic>?;
         });
       await Future.delayed( Duration.zero,() {Navigator.pop(context);});
+      if(userNameSize || userNameTakenError){
+        userNameDialog();
+        }
     }
 
     Future<void> refreshProfile() async{
@@ -97,38 +104,31 @@ class ProfileData extends State<Profile> {
       
                       Row(
                         children: [
-                        Themes().profileFields(
+                        Themes().profileFields(context, _userNameFocusNode,
                           controller: userName, isUnderlined: userNameUL, text: userData?['username']),
                         const SizedBox(width: 5),
                         Themes().editButton(() async{
+                          showDialog( context: context, builder: (context) { return Themes().loadingDialog();});
                           if(userNameUL == false){
                             if(userName.text.length<10){
                               userNameSize=false;
                               userNameTakenError=false;
-                              userNameTakenError = await  ProfileFunctions().setUserName(currentUser, userName.text.trim());
-                              refreshProfile();}
+                              userNameTakenError = await  ProfileFunctions().setUserName(currentUser, userName.text.trim());}
                             else{
-                              userNameSize=true;}
+                              userNameSize=true;
+                              }
+                            refreshProfile();
                           }
                           setState((){
                             userNameUL = !userNameUL;
-                          });} , 35, 17, userNameUL),
-                          const SizedBox(width: 20),
-                          Padding(
-                            padding:  const EdgeInsets.only (top: 2),
-                            child: Visibility(
-                            visible: userNameTakenError || userNameSize,
-                            child: Container(
-                              constraints: BoxConstraints(maxWidth: (MediaQuery.of(context).size.width)*0.65),
-                              child: RichText(
-                                text: TextSpan(
-                                  text: userNameSize ? 'Use Less Than 10 Characters!' : 'This Username Already Exists!',
-                                  style: const TextStyle(fontSize: 14, color: Color.fromARGB(255, 255, 0, 0), fontWeight: FontWeight.w300),
-                                ),
-                              )
-                            )
-                            ),
-                          ),
+                          });
+                          await Future.delayed( Duration.zero,() {
+                            Navigator.pop(context);
+                          });
+                            if (userNameUL) {
+                              FocusScope.of(context).requestFocus(_userNameFocusNode);
+                              }
+                          } , 35, 17, userNameUL)
                         ]),
     
                         Row(
@@ -204,7 +204,8 @@ class ProfileData extends State<Profile> {
                                           return Themes().confirmDialog(context, () async{
                                             Navigator.of(context).pop();
                                             await deleteHighlight(index);
-                                          });});
+                                          }, 'Are you sure?'
+                                          );});
                                   })
                               ])))) : const Text(''),
                         const SizedBox(height: 30)                        
@@ -216,7 +217,18 @@ class ProfileData extends State<Profile> {
         ));
       }
 
-    selectImage(String imageType) async{
+  userNameDialog(){
+      userNameTakenError? 
+  showDialog( context: context, builder: (context) { return Themes().resultDialog2(context, 'This Username is Already Taken!');})
+  : userNameSize ? 
+  showDialog( context: context, builder: (context) { return Themes().resultDialog2(context, 'Use Less Than 10 Characters!'); })
+  : const SizedBox();
+  userNameTakenError = false;
+  userNameSize=false;
+
+  }
+
+  selectImage(String imageType) async{
     showDialog(
         context: context, 
         builder: (context) {
